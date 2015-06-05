@@ -1,0 +1,124 @@
+dataBase = importDataBase('PAKDD-PAKDD_GERMANO.cod', 2, 40701);
+sizeDB = size(dataBase,1);
+
+folder = which('RNScript');
+folder = strrep(folder,'RNScript.m','');
+
+classes = unique(dataBase(:,end-1:end),'rows');
+%como eu tenho as classes 01 e 10 posso verificar apenas com o ultimo valor
+%classe 0 é a q o final termina com 0 e classe 1 é a que o final termina
+%com 1
+    
+
+%dividindo os padrões ede acordo com suas classes
+    for c=0:size(classes,1)-1 % todas as classes        
+        achar = dataBase(:,end) == c; %matriz com 1 nos padrões q encontrar
+        numPadroes = sum(achar); %qnt de padrõe da classe c     
+        padroes = dataBase(achar,:); % todas as linhas dos padroes achados
+        
+        if c==0 %classe 10
+            padroes0 = padroes;
+            
+        else %classe 01
+            padroes1 = padroes; 
+           
+        end             
+  
+    end
+
+    
+ sizePadroes0 = size(padroes0,1);
+ sizePadroes1 = size(padroes1,1);
+ 
+ padroes0 = padroes0(randperm(sizePadroes0),:);
+ padroes1 = padroes1(randperm(sizePadroes1),:);
+
+ metodoBalanceamento = 0;
+ 
+ [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
+ [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
+ 
+ switch(metodoBalanceamento)
+     case 0 %replicacao dos exemplos da classe minoritaria
+                 
+         if (sizePadroes0>sizePadroes1)
+            [cjtTreinamento1, cjtValidacao1] = oversamplingRepeticao(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
+         else
+            [cjtTreinamento0, cjtValidacao0] = oversamplingRepeticao(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1));    
+         end
+         
+         
+     case 1 %diminuicao aleatoria de elementos da classe majoritaria
+         'diminuicao aleatoria'
+        
+          if (sizePadroes0<sizePadroes1)
+            [cjtTreinamento1, cjtValidacao1] = undersamplingAleatorio(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
+          else
+            [cjtTreinamento0, cjtValidacao0] = undersamplingAleatorio(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
+          end
+         
+         
+     case 2 %kmedias
+         'kmedias'
+         
+          if (sizePadroes0<sizePadroes1)
+            [cjtTreinamento1, cjtValidacao1] = undersamplingKmedias(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
+          else
+            [cjtTreinamento0, cjtValidacao0] = undersamplingKmedias(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
+          end
+         
+          
+     case 3 %smote
+         'smote'
+         
+          if (sizePadroes0>sizePadroes1)
+            [cjtTreinamento1, cjtValidacao1] = oversamplingSmote(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
+          else
+            [cjtTreinamento0, cjtValidacao0] = oversamplingSmote(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
+          end
+         
+ end
+ 
+ %juntar as classes
+ cjtTreinamento = vertcat(cjtTreinamento0,cjtTreinamento1);
+ cjtValidacao = vertcat(cjtValidacao0,cjtValidacao1);
+ cjtTeste = vertcat(cjtTeste0,cjtTeste1);
+ 
+ %aleatorizar os conjuntos
+ sizeTreinamento = size(cjtTreinamento,1);
+ cjtTreinamento = cjtTreinamento(randperm(sizeTreinamento),:); %da um random nas linhas da matriz (embaralhar)
+ 
+ sizeValidacao = size(cjtValidacao,1);
+ cjtValidacao = cjtValidacao(randperm(sizeValidacao),:);
+ 
+ sizeTeste = size(cjtTeste,1);
+ cjtTeste = cjtTeste(randperm(sizeTeste),:);
+    
+    
+ %criando arquivos
+baseFileNameT = 'Treinamento.txt';
+fullFileNameT = fullfile(folder, baseFileNameT);
+fileIDT = fopen(fullFileNameT, 'w+');
+for i = 1:sizeTreinamento
+    fprintf(fileIDT,'%f\t',cjtTreinamento(i,:));
+    fprintf(fileIDT,'\n');
+end
+
+baseFileNameV = 'Validacao.txt';
+fullFileNameV = fullfile(folder, baseFileNameV);
+fileIDV = fopen(fullFileNameV, 'w+');
+for i = 1:sizeValidacao
+    fprintf(fileIDV,'%f\t',cjtValidacao(i,:));
+    fprintf(fileIDV,'\n');
+end
+
+
+baseFileNameTe = 'Teste.txt';
+fullFileNameTe = fullfile(folder, baseFileNameTe);
+fileIDTe = fopen(fullFileNameTe, 'w+');
+for i = 1:sizeTeste
+    fprintf(fileIDTe,'%f\t',cjtTeste(i,:));
+    fprintf(fileIDTe,'\n');
+end
+
+fclose('all'); %fecha todos os arquivos abertos.
