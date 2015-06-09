@@ -39,7 +39,7 @@ fclose(arquivoValidacao);
 fclose(arquivoTeste);
 
 %   Criando a rede (para ajuda, digite 'help newff')
-
+matrizFaixa = zeros([numEntradas, 2]);
 for entrada = 1 : numEntradas;  % Cria 'matrizFaixa', que possui 'numEntradas' linhas, cada uma sendo igual a [0 1].
      matrizFaixa(entrada,:) = [0 1];  
 end
@@ -58,7 +58,7 @@ echo on
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
 rede.trainParam.lr       = 0.2;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
-rede.trainParam.max_fail = 20;      % Criterio de quantidade maxima de falhas na validacao
+rede.trainParam.max_fail = 100;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
 rede.trainParam.show     = 10;     % Iteracoes entre exibicoes na tela (preenchendo com 'NaN', nao exibe na tela)
 rede.trainParam.time     = inf;    % Tempo maximo (em segundos) para o treinamento
@@ -86,7 +86,7 @@ conjuntoValidacao.T = saidasValidacao;   % Saidas desejadas da validacao
 fprintf('\nTestando ...\n');
 
 %    Testando a rede
-[saidasRedeTeste,Pf,Af,errosTeste,desempenhoTeste] = sim(redeNova,entradasTeste,[],[],saidasTeste);
+[saidasRedeTeste,Pf,Af,errosTeste,desempenhoTeste] = RNprivatesim(redeNova,entradasTeste,[],[],saidasTeste);
 
 
 % saidasRedeTeste : matriz contendo as saidas da rede para cada padrao de teste
