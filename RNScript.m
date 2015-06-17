@@ -1,15 +1,17 @@
-%roda o script de pre processamento primeiro
-preProcessamento;
-
 echo on
 clear
 
+%roda o script de pre processamento primeiro
+preProcessamento;
+
+
+
 %    Informacoes sobre a rede e os dados
 numEntradas   = 46;     % Numero de nodos de entrada
-numEscondidos = 5;     % Numero de nodos escondidos
+numEscondidos = 10;     % Numero de nodos escondidos
 numSaidas     = 2;     % Numero de nod48os de saida
-numTr         = 40300;   % Numero de padroes de treinamento
-numVal        = 20150;    % Numero de padroes de validacao
+numTr         = 40000;   % Numero de padroes de treinamento
+numVal        = 20000;    % Numero de padroes de validacao
 numTeste      = 10175;    % Numero de padroes de teste
 
 echo off
@@ -44,7 +46,7 @@ for entrada = 1 : numEntradas;  % Cria 'matrizFaixa', que possui 'numEntradas' l
      matrizFaixa(entrada,:) = [0 1];  
 end
 
-rede = newff(matrizFaixa,[numEscondidos numSaidas],{'tansig','tansig'},'traingdm','learngdm','mse');
+rede = newff(matrizFaixa,[numEscondidos numSaidas],{'tansig','tansig'},'traingd','learngd','mse');
 % matrizFaixa                    : indica que todas as entradas possuem valores na faixa entre 0 e 1
 % [numEscondidos numSaidas]      : indica a quantidade de nodos escondidos e de saida da rede
 % {'logsig','logsig'}            : indica que os nodos das camadas escondida e de saida terao funcao de ativacao sigmoide logistica
@@ -54,15 +56,25 @@ rede = newff(matrizFaixa,[numEscondidos numSaidas],{'tansig','tansig'},'traingdm
 % Inicializa os pesos da rede criada (para ajuda, digite 'help init')
 rede = init(rede);
 echo on
+
+%   Parametros para visualização do estado da rede
+rede.trainParam.showCommandLine = true; % Habilita a visualização da informação de treinamento através de GUI
+rede.trainParam.showWindow      = true; % Habilita a visualização da informação de treinamento através de linha de comnado
+
+
+
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.2;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.4;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
-rede.trainParam.max_fail = 100;      % Criterio de quantidade maxima de falhas na validacao
+rede.trainParam.max_fail = 150;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
 rede.trainParam.show     = 10;     % Iteracoes entre exibicoes na tela (preenchendo com 'NaN', nao exibe na tela)
 rede.trainParam.time     = inf;    % Tempo maximo (em segundos) para o treinamento
 echo off
+
+rede.plotFcns =  {'plotperform','plottrainstate','plotregression','plotroc','plotconfusion'};
+
 fprintf('\nTreinando ...\n')
 
 conjuntoValidacao.P = entradasValidacao; % Entradas da validacao
@@ -82,6 +94,7 @@ conjuntoValidacao.T = saidasValidacao;   % Saidas desejadas da validacao
 %             (para cada padrao: erro = saida desejada - saida da rede)
 % Obs.       : Os dois argumentos de 'train' preenchidos com [] apenas sao utilizados quando se usam delays
 %             (para ajuda, digitar 'help train')
+
 
 fprintf('\nTestando ...\n');
 
