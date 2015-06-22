@@ -46,7 +46,9 @@ classes = unique(dataBase(:,end-1:end),'rows');
          else
             [cjtTreinamento0, cjtValidacao0] = oversamplingRepeticao(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1));    
          end
-         
+        numTr         = 40000;   % Numero de padroes de treinamento
+        numVal        = 20000;    % Numero de padroes de validacao
+        numTeste      = 10175;    % Numero de padroes de teste
          
      case 1 %diminuicao aleatoria de elementos da classe majoritaria
          'diminuicao aleatoria'
@@ -56,7 +58,8 @@ classes = unique(dataBase(:,end-1:end),'rows');
           else
             [cjtTreinamento0, cjtValidacao0] = undersamplingAleatorio(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
           end
-         
+          
+                   
          
      case 2 %kmedias
          'kmedias'

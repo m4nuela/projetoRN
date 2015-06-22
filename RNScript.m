@@ -1,5 +1,5 @@
 echo on
-clear
+%clear
 
 %roda o script de pre processamento primeiro
 preProcessamento;
@@ -10,9 +10,7 @@ preProcessamento;
 numEntradas   = 46;     % Numero de nodos de entrada
 numEscondidos = 10;     % Numero de nodos escondidos
 numSaidas     = 2;     % Numero de nod48os de saida
-numTr         = 40000;   % Numero de padroes de treinamento
-numVal        = 20000;    % Numero de padroes de validacao
-numTeste      = 10175;    % Numero de padroes de teste
+
 
 echo off
 
