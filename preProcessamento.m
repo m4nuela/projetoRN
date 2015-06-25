@@ -33,10 +33,19 @@ classes = unique(dataBase(:,end-1:end),'rows');
  padroes0 = padroes0(randperm(sizePadroes0),:);
  padroes1 = padroes1(randperm(sizePadroes1),:);
 
- metodoBalanceamento = 0;
+ metodoBalanceamento = 2;
  
  [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
  [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
+ 
+ 
+ %size(cjtTreinamento0,1) = 350
+ %size(cjtTeste0,1) = 175
+ %size(cjtValidacao0,1) = 175
+ 
+ %size(cjtTreinamento1,1) = 20000
+ %size(cjtTeste1,1)= 10000
+ %size(cjtValidacao1,1)= 10000
  
  switch(metodoBalanceamento)
      case 0 %replicacao dos exemplos da classe minoritaria
@@ -46,7 +55,9 @@ classes = unique(dataBase(:,end-1:end),'rows');
          else
             [cjtTreinamento0, cjtValidacao0] = oversamplingRepeticao(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1));    
          end
-         
+        numTr         = 40000;   % Numero de padroes de treinamento
+        numVal        = 20000;    % Numero de padroes de validacao
+        numTeste      = 10175;    % Numero de padroes de teste
          
      case 1 %diminuicao aleatoria de elementos da classe majoritaria
          'diminuicao aleatoria'
@@ -56,7 +67,11 @@ classes = unique(dataBase(:,end-1:end),'rows');
           else
             [cjtTreinamento0, cjtValidacao0] = undersamplingAleatorio(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
           end
-         
+          
+           numTr         = 700;   % Numero de padroes de treinamento
+           numVal        = 350;    % Numero de padroes de validacao
+           numTeste      = 10175;    % Numero de padroes de teste
+                    
          
      case 2 %kmedias
          'kmedias'
@@ -66,6 +81,10 @@ classes = unique(dataBase(:,end-1:end),'rows');
           else
             [cjtTreinamento0, cjtValidacao0] = undersamplingKmedias(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
           end
+          
+           numTr         = 700;   % Numero de padroes de treinamento
+           numVal        = 350;    % Numero de padroes de validacao
+           numTeste      = 10175;    % Numero de padroes de teste
          
           
      case 3 %smote
@@ -84,6 +103,10 @@ classes = unique(dataBase(:,end-1:end),'rows');
             N = round(size(cjtValidacao1,1)/size(cjtValidacao0,1));
             cjtValidacao0 = SMOTE(cjtValidacao0, N);
          end
+          
+        numTr         = 40000;   % Numero de padroes de treinamento
+        numVal        = 20000;    % Numero de padroes de validacao
+        numTeste      = 10175;    % Numero de padroes de teste
          
  end
  
