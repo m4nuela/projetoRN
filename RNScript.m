@@ -1,10 +1,9 @@
-echo on
 %clear
 
 %roda o script de pre processamento primeiro
 preProcessamento;
 
-
+echo on
 
 %    Informacoes sobre a rede e os dados
 numEntradas   = 46;     % Numero de nodos de entrada
