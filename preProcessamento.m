@@ -71,11 +71,19 @@ classes = unique(dataBase(:,end-1:end),'rows');
      case 3 %smote
          'smote'
          
-          if (sizePadroes0>sizePadroes1)
-            [cjtTreinamento1, cjtValidacao1] = oversamplingSmote(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
-          else
-            [cjtTreinamento0, cjtValidacao0] = oversamplingSmote(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
-          end
+         if (sizePadroes0 > sizePadroes1)
+            N = round(size(cjtTreinamento0,1)/size(cjtTreinamento1,1));
+            cjtTreinamento1 = SMOTE(cjtTreinamento1, N);
+            
+            N = round(size(cjtValidacao0,1)/size(cjtValidacao1,1));
+            cjtValidacao1 = SMOTE(cjtValidacao1, N);
+         else
+            N = round(size(cjtTreinamento1,1)/size(cjtTreinamento0,1));
+            cjtTreinamento0 = SMOTE(cjtTreinamento0, N);
+            
+            N = round(size(cjtValidacao1,1)/size(cjtValidacao0,1));
+            cjtValidacao0 = SMOTE(cjtValidacao0, N);
+         end
          
  end
  
