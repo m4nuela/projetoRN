@@ -1,23 +1,39 @@
 function overSamples = oversamplingSmote(Samples, N)
-	Synthetic = [];
+	% Novos exemplos a serem criados
+    Synthetic = [];
+    
+    % Separando a classe dos padroes
     Labels = Samples(:,end-1:end);
     Samples = Samples(:,1:end-2);
     
-    k = 5;
+    % Neste caso, queremos um aumento de (N*100)%
+    k = N;
     
-    %Neighbors = zeros(size(Samples,1),5);
-    
+    % Para cada exemplo, gerar N sintéticos
     for i = 1:size(Samples,1)
+        % K vizinhos mais proximos do exemplo atual
         Neighbors = KNN(Samples(i,:), Samples, k);
         
+        % Aleatorizando a ordem de escolha destes k vizinhos
+        indexes = randperm(k);
+        
         for n = 1:N
-            nn = mod(round(10*rand(1)),k)+1;
+            % Vizinho escolhido
+            nn = indexes(n);
+            
+            % Criação do novo exemplo, como vetor entre o padrão atual e
+            % vizinho mais próximo escolhido
             diff = Samples(Neighbors(nn)) - Samples(i,:);
             gap = rand(1,size(Samples,2));
-            Synthetic = [Synthetic; [(Samples(i,:) + times(gap,diff)), Labels(i,:)]];
+            new_synthetic = Samples(i,:) + times(gap,diff);
+            
+            % Adiciona o novo padrão ao conjunto, com a msma classe do
+            % original
+            Synthetic = [Synthetic; [new_synthetic, Labels(i,:)]];
         end
     end
     
-    overSamples = [[Samples,Labels];Synthetic];
+    % Unindo o conjunto original e o novo
+    overSamples = [[Samples,Labels] ; Synthetic];
 end
 

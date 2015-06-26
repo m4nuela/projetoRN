@@ -1,5 +1,5 @@
-%dataBase = importDataBase('PAKDD-PAKDD_GERMANO.cod', 2, 40701);
-%dataBase = dataBase(:,2:end);%1 coluna é o numero de sequencia
+dataBase = importDataBase('PAKDD-PAKDD_GERMANO.cod', 2, 40701);
+dataBase = dataBase(:,2:end);%1 coluna é o numero de sequencia
 sizeDB = size(dataBase,1);
 
 folder = which('RNScript');
