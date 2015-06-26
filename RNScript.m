@@ -6,7 +6,7 @@ preProcessamento;
 echo on
 
 %    Informacoes sobre a rede e os dados
-numEntradas   = 46;     % Numero de nodos de entrada
+numEntradas   = 45;     % Numero de nodos de entrada
 numEscondidos = 10;     % Numero de nodos escondidos
 numSaidas     = 2;     % Numero de nod48os de saida
 
@@ -62,7 +62,7 @@ rede.trainParam.showWindow      = true; % Habilita a visualização da informação 
 
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.4;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.3;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
 rede.trainParam.max_fail = 150;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
@@ -131,4 +131,4 @@ end
 
 erroClassifTeste = 100 * (classificacoesErradas/numTeste);
 
-fprintf('Erro de classificacao para o conjunto de teste: %6.5f\n',erroClassifTeste);
+%fprintf('Erro de classificacao para o conjunto de teste: %6.5f\n',erroClassifTeste);

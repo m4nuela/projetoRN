@@ -1,4 +1,5 @@
-dataBase = importDataBase('PAKDD-PAKDD_GERMANO.cod', 2, 40701);
+%dataBase = importDataBase('PAKDD-PAKDD_GERMANO.cod', 2, 40701);
+%dataBase = dataBase(:,2:end);%1 coluna é o numero de sequencia
 sizeDB = size(dataBase,1);
 
 folder = which('RNScript');
@@ -33,7 +34,7 @@ classes = unique(dataBase(:,end-1:end),'rows');
  padroes0 = padroes0(randperm(sizePadroes0),:);
  padroes1 = padroes1(randperm(sizePadroes1),:);
 
- metodoBalanceamento = 2;
+ metodoBalanceamento = 0;
  
  [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
  [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
