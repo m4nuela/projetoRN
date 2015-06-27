@@ -3,12 +3,20 @@
 %roda o script de pre processamento primeiro
 preProcessamento;
 
+
+% Salvando os resultados
+OutFolderName = 'Resultados/1/';
+if( exist(OutFolderName, 'dir') == 0 )
+    mkdir(OutFolderName);
+end
+
+
 echo on
 
 %    Informacoes sobre a rede e os dados
 numEntradas   = 45;     % Numero de nodos de entrada
 numEscondidos = 10;     % Numero de nodos escondidos
-numSaidas     = 2;     % Numero de nod48os de saida
+numSaidas     = 2;     % Numero de nodos de saida
 
 
 echo off
@@ -108,6 +116,19 @@ fprintf('\nTestando ...\n');
 fprintf('MSE para o conjunto de treinamento: %6.5f \n',desempenho.perf(length(desempenho.perf)));
 fprintf('MSE para o conjunto de validacao: %6.5f \n',desempenho.vperf(length(desempenho.vperf)));
 fprintf('MSE para o conjunto de teste: %6.5f \n',desempenhoTeste);
+
+figure(1);
+croc = plotroc(saidasTeste,saidasRedeTeste, 'TESTE');
+saveas(croc, [OutFolderName, 'ROCTeste.png'], 'png');
+
+figure(2);
+confu = plotconfusion(saidasTeste,saidasRedeTeste, 'TESTE');
+saveas(confu, [OutFolderName,'ConfusionTeste.png'], 'png');
+
+figure(3);
+reg = plotregression(saidasTeste,saidasRedeTeste, 'TESTE');
+saveas(reg, [OutFolderName,'RegressionTeste.png'], 'png');
+
 
 %     Calculando o erro de classificacao para o conjunto de teste
 %     (A regra de classificacao e' winner-takes-all, ou seja, o nodo de saida que gerar o maior valor de saida
