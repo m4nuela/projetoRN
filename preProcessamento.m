@@ -92,17 +92,23 @@ classes = unique(dataBase(:,end-1:end),'rows');
          'smote'
          
          if (sizePadroes0 > sizePadroes1)
-            N = round(size(cjtTreinamento0,1)/size(cjtTreinamento1,1));
-            cjtTreinamento1 = oversamplingSmote(cjtTreinamento1, N,size(cjtTreinamento0));
+            N = floor((size(cjtTreinamento0,1)- size(cjtTreinamento1,1))/size(cjtTreinamento1,1));
+            resto = mod(size(cjtTreinamento0,1),size(cjtTreinamento1,1));
+            cjtTreinamento1 = oversamplingSmote(cjtTreinamento1, N, resto);
             
-            N = round(size(cjtValidacao0,1)/size(cjtValidacao1,1));
-            cjtValidacao1 = oversamplingSmote(cjtValidacao1, N, size(cjtValidacao0));
+            N = floor((size(cjtValidacao0,1)- size(cjtValidacao1,1))/size(cjtValidacao1,1));
+            resto = mod(size(cjtValidacao0,1),size(cjtValidacao1,1));
+            cjtValidacao1 = oversamplingSmote(cjtValidacao1, N, resto);
+            
          else
-            N = round(size(cjtTreinamento1,1)/size(cjtTreinamento0,1));
-            cjtTreinamento0 = oversamplingSmote(cjtTreinamento0, N, size(cjtTreinamento1));
+            N = floor((size(cjtTreinamento1,1) - size(cjtTreinamento0,1))/size(cjtTreinamento0,1));
+            resto = mod(size(cjtTreinamento1,1),size(cjtTreinamento0,1));
+            cjtTreinamento0 = oversamplingSmote(cjtTreinamento0, N,resto);
             
-            N = round(size(cjtValidacao1,1)/size(cjtValidacao0,1));
-            cjtValidacao0 = oversamplingSmote(cjtValidacao0, N, size(cjtValidacao1));
+            N = floor((size(cjtValidacao1,1) - size(cjtValidacao0,1))/size(cjtValidacao0,1));
+            resto = mod(size(cjtValidacao1,1),size(cjtValidacao0,1));
+            cjtValidacao0 = oversamplingSmote(cjtValidacao0, N,resto);
+
          end
           
         numTr         = 40000;   % Numero de padroes de treinamento
