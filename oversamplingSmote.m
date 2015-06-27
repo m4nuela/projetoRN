@@ -1,4 +1,4 @@
-function overSamples = oversamplingSmote(Samples, N)
+function overSamples = oversamplingSmote(Samples, N, resto)
 	% Novos exemplos a serem criados
     Synthetic = [];
     
@@ -7,10 +7,14 @@ function overSamples = oversamplingSmote(Samples, N)
     Samples = Samples(:,1:end-2);
     
     % Neste caso, queremos um aumento de (N*100)%
-    k = N;
     
     % Para cada exemplo, gerar N sintéticos
     for i = 1:size(Samples,1)
+        if i <= resto
+            k = N+1;
+        else
+            k = N;
+        end
         % K vizinhos mais proximos do exemplo atual
         Neighbors = KNN(Samples(i,:), Samples, k);
         
