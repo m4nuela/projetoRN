@@ -34,7 +34,7 @@ classes = unique(dataBase(:,end-1:end),'rows');
  padroes0 = padroes0(randperm(sizePadroes0),:);
  padroes1 = padroes1(randperm(sizePadroes1),:);
 
- metodoBalanceamento = 0;
+ metodoBalanceamento = 3;
  
  [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
  [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
@@ -93,16 +93,16 @@ classes = unique(dataBase(:,end-1:end),'rows');
          
          if (sizePadroes0 > sizePadroes1)
             N = round(size(cjtTreinamento0,1)/size(cjtTreinamento1,1));
-            cjtTreinamento1 = oversamplingSmote(cjtTreinamento1, N);
+            cjtTreinamento1 = oversamplingSmote(cjtTreinamento1, N,size(cjtTreinamento0));
             
             N = round(size(cjtValidacao0,1)/size(cjtValidacao1,1));
-            cjtValidacao1 = oversamplingSmote(cjtValidacao1, N);
+            cjtValidacao1 = oversamplingSmote(cjtValidacao1, N, size(cjtValidacao0));
          else
             N = round(size(cjtTreinamento1,1)/size(cjtTreinamento0,1));
-            cjtTreinamento0 = oversamplingSmote(cjtTreinamento0, N);
+            cjtTreinamento0 = oversamplingSmote(cjtTreinamento0, N, size(cjtTreinamento1));
             
             N = round(size(cjtValidacao1,1)/size(cjtValidacao0,1));
-            cjtValidacao0 = oversamplingSmote(cjtValidacao0, N);
+            cjtValidacao0 = oversamplingSmote(cjtValidacao0, N, size(cjtValidacao1));
          end
           
         numTr         = 40000;   % Numero de padroes de treinamento
