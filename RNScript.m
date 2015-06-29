@@ -63,14 +63,14 @@ rede = init(rede);
 echo on
 
 %   Parametros para visualização do estado da rede
-rede.trainParam.showCommandLine = true; % Habilita a visualização da informação de treinamento através de GUI
-rede.trainParam.showWindow      = true; % Habilita a visualização da informação de treinamento através de linha de comnado
+%rede.trainParam.showCommandLine = true; % Habilita a visualização da informação de treinamento através de GUI
+%rede.trainParam.showWindow      = true; % Habilita a visualização da informação de treinamento através de linha de comnado
 
 
 
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.3;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.4;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
 rede.trainParam.max_fail = 20;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
