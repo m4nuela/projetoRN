@@ -34,7 +34,7 @@ classes = unique(dataBase(:,end-1:end),'rows');
  padroes0 = padroes0(randperm(sizePadroes0),:);
  padroes1 = padroes1(randperm(sizePadroes1),:);
 
- metodoBalanceamento = 1;
+ metodoBalanceamento = 0;
  
  [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
  [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
@@ -50,12 +50,26 @@ classes = unique(dataBase(:,end-1:end),'rows');
  
  switch(metodoBalanceamento)
      case 0 %replicacao dos exemplos da classe minoritaria
-                 
-         if (sizePadroes0>sizePadroes1)
-            [cjtTreinamento1, cjtValidacao1] = oversamplingRepeticao(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
+          if (sizePadroes0 > sizePadroes1)
+            N = floor((size(cjtTreinamento0,1)- size(cjtTreinamento1,1))/size(cjtTreinamento1,1));
+            resto = mod(size(cjtTreinamento0,1),size(cjtTreinamento1,1));
+            cjtTreinamento1 = oversamplingRepeticao(cjtTreinamento1, N, resto);
+            
+            N = floor((size(cjtValidacao0,1)- size(cjtValidacao1,1))/size(cjtValidacao1,1));
+            resto = mod(size(cjtValidacao0,1),size(cjtValidacao1,1));
+            cjtValidacao1 = oversamplingRepeticao(cjtValidacao1, N, resto);
+            
          else
-            [cjtTreinamento0, cjtValidacao0] = oversamplingRepeticao(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1));    
-         end
+            N = floor((size(cjtTreinamento1,1) - size(cjtTreinamento0,1))/size(cjtTreinamento0,1));
+            resto = mod(size(cjtTreinamento1,1),size(cjtTreinamento0,1));
+            cjtTreinamento0 = oversamplingRepeticao(cjtTreinamento0, N,resto);
+            
+            N = floor((size(cjtValidacao1,1) - size(cjtValidacao0,1))/size(cjtValidacao0,1));
+            resto = mod(size(cjtValidacao1,1),size(cjtValidacao0,1));
+            cjtValidacao0 = oversamplingRepeticao(cjtValidacao0, N,resto);
+
+         end  
+         
         numTr         = 40000;   % Numero de padroes de treinamento
         numVal        = 20000;    % Numero de padroes de validacao
         numTeste      = 10175;    % Numero de padroes de teste

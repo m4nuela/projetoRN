@@ -1,0 +1,13 @@
+function [cjtFinal] = oversamplingRepeticao(cjt, N, resto)
+%UNTITLED3 Summary of this function goes here
+%   Detailed explanation goes here
+[m,n] = size(cjt);
+
+cjtFinal = zeros (m*N + resto,n);
+index = 1;
+for i=1:N
+    cjtFinal(index:,:) = cjt;
+    index = index+m;
+end
+
+cjtFinal(index,:) = cjt(resto,:);
