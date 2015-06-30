@@ -22,7 +22,7 @@ function overSamples = oversamplingSmote(Samples, N, resto)
         
         for n = 1:p
             nn = mod(round(10*rand(1)),k)+1;
-            diff = Samples(Neighbors(nn)) - Samples(i,:);
+            diff = Samples(Neighbors(nn),:) - Samples(i,:);
             gap = rand(1,size(Samples,2));
             Synthetic = [Synthetic; [(Samples(i,:) + times(gap,diff)), Labels(i,:)]];
         end
