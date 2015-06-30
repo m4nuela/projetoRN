@@ -14,7 +14,7 @@ end
 echo on
 
 %    Informacoes sobre a rede e os dados
-numEntradas   = 45;     % Numero de nodos de entrada
+numEntradas   = 46;     % Numero de nodos de entrada
 numEscondidos = 10;     % Numero de nodos escondidos
 numSaidas     = 2;     % Numero de nodos de saida
 
@@ -51,7 +51,7 @@ for entrada = 1 : numEntradas;  % Cria 'matrizFaixa', que possui 'numEntradas' l
      matrizFaixa(entrada,:) = [0 1];  
 end
 
-rede = newff(matrizFaixa,[numEscondidos numSaidas],{'tansig','tansig'},'traingd','learngd','mse');
+rede = newff(matrizFaixa,[numEscondidos numSaidas],{'tansig','tansig'},'traingdm','learngdm','mse');
 % matrizFaixa                    : indica que todas as entradas possuem valores na faixa entre 0 e 1
 % [numEscondidos numSaidas]      : indica a quantidade de nodos escondidos e de saida da rede
 % {'logsig','logsig'}            : indica que os nodos das camadas escondida e de saida terao funcao de ativacao sigmoide logistica
@@ -70,11 +70,11 @@ echo on
 
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.4;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.2;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
-rede.trainParam.max_fail = 20;      % Criterio de quantidade maxima de falhas na validacao
+rede.trainParam.max_fail = 150;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
-rede.trainParam.show     = 10;     % Iteracoes entre exibicoes na tela (preenchendo com 'NaN', nao exibe na tela)
+%rede.trainParam.show     = 10;     % Iteracoes entre exibicoes na tela (preenchendo com 'NaN', nao exibe na tela)
 rede.trainParam.time     = inf;    % Tempo maximo (em segundos) para o treinamento
 echo off
 
@@ -101,10 +101,11 @@ conjuntoValidacao.T = saidasValidacao;   % Saidas desejadas da validacao
 %             (para ajuda, digitar 'help train')
 
 
+
 fprintf('\nTestando ...\n');
 
 %    Testando a rede
-[saidasRedeTeste,Pf,Af,errosTeste,desempenhoTeste] = RNprivatesim(redeNova,entradasTeste,[],[],saidasTeste);
+[saidasRedeTeste,A1,A2,errosTeste,desempenhoTeste] = RNprivatesim(redeNova,entradasTeste,[],[],saidasTeste);
 
 
 % saidasRedeTeste : matriz contendo as saidas da rede para cada padrao de teste
@@ -125,9 +126,7 @@ figure(2);
 confu = plotconfusion(saidasTeste,saidasRedeTeste, 'TESTE');
 saveas(confu, [OutFolderName,'ConfusionTeste.png'], 'png');
 
-figure(3);
-reg = plotregression(saidasTeste,saidasRedeTeste, 'TESTE');
-saveas(reg, [OutFolderName,'RegressionTeste.png'], 'png');
+
 
 
 %     Calculando o erro de classificacao para o conjunto de teste

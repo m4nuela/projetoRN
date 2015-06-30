@@ -219,7 +219,7 @@ while continuar
     
     
     fprintf('Treinamento : %d \n',alteracoes);
-    if ((alteracoes < 350) || (iteracoes>9))
+    if ((alteracoes < 350) || (iteracoes>15))
        continuar = 0; 
     end
     
