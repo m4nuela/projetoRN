@@ -127,8 +127,19 @@ figure(2);
 confu = plotconfusion(saidasTeste,saidasRedeTeste, 'TESTE');
 saveas(confu, [OutFolderName,'ConfusionTeste.png'], 'png');
 
-[tp,fp,~] = roc(saidasTeste,saidasRedeTeste);
-areaCR = trapz(cell2mat(fp),cell2mat(tp));
+[tpr, fpr, thresholds] = roc(saidasTeste(1,:),saidasRedeTeste(1,:));
+[tpr2, fpr2, thresholds2] = roc(saidasTeste(2,:),saidasRedeTeste(2,:));
+
+tprMedio = (tpr+tpr2)/2;
+fprMedio = (fpr+fpr2)/2;
+
+figure(3);
+
+plot(fprMedio, tprMedio);
+xlabel('False positive rate');
+ylabel('True positive rate');
+title('Curva ROC Teste');
+area = trapz(fprMedio,tprMedio);
 
 
 baseFileNameT = 'configuracao.txt';
@@ -145,8 +156,7 @@ fprintf(fileIDT,'Balanceamento = Repeticao aleatoria / ');
 fprintf(fileIDT,'MSE treinamento: %6.5f / ',desempenho.perf(length(desempenho.perf)));
 fprintf(fileIDT,'MSE validacao: %6.5f / ',desempenho.vperf(length(desempenho.vperf)));
 fprintf(fileIDT,'MSE teste: %6.5f  /',desempenhoTeste);
-fprintf(fileIDT,'Area CR: %6.5f  ',areaCR);
-
+fprintf(fileIDT,'AUR: %6.5f\n', area);
 
 
 
