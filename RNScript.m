@@ -127,8 +127,8 @@ figure(2);
 confu = plotconfusion(saidasTeste,saidasRedeTeste, 'TESTE');
 saveas(confu, [OutFolderName,'ConfusionTeste.png'], 'png');
 
-%[tp,fp,~] = roc(saidasTeste,saidasRedeTeste);
-%areaCR = trapz(cell2mat(tp),cell2mat(fp))
+[tp,fp,~] = roc(saidasTeste,saidasRedeTeste);
+areaCR = trapz(cell2mat(fp),cell2mat(tp));
 
 
 baseFileNameT = 'configuracao.txt';
@@ -144,7 +144,8 @@ fprintf(fileIDT,'funcao ativacao = Sigmoide Logistica / ');
 fprintf(fileIDT,'Balanceamento = Repeticao aleatoria / ');
 fprintf(fileIDT,'MSE treinamento: %6.5f / ',desempenho.perf(length(desempenho.perf)));
 fprintf(fileIDT,'MSE validacao: %6.5f / ',desempenho.vperf(length(desempenho.vperf)));
-fprintf(fileIDT,'MSE teste: %6.5f  ',desempenhoTeste);
+fprintf(fileIDT,'MSE teste: %6.5f  /',desempenhoTeste);
+fprintf(fileIDT,'Area CR: %6.5f  ',areaCR);
 
 
 

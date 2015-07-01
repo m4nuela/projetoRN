@@ -34,7 +34,7 @@ classes = unique(dataBase(:,end-1:end),'rows');
  padroes0 = padroes0(randperm(sizePadroes0),:);
  padroes1 = padroes1(randperm(sizePadroes1),:);
 
- metodoBalanceamento = 2;
+ metodoBalanceamento = 0;
  
  [cjtTreinamento0, cjtTeste0, cjtValidacao0] = dividirConjunto(padroes0); 
  [cjtTreinamento1, cjtTeste1, cjtValidacao1] = dividirConjunto(padroes1);
@@ -86,7 +86,8 @@ classes = unique(dataBase(:,end-1:end),'rows');
              labelsV1 = cjtValidacao1(1:size(SamplesV1,1),end-1:end); 
              cjtTreinamento1 = [SamplesT1,labelsT1];
              cjtValidacao1 = [SamplesV1,labelsV1];
-         else SamplesT0 = cjtTreinamento0(:,1:end-2); 
+         else
+             SamplesT0 = cjtTreinamento0(:,1:end-2);
              SamplesV0 = cjtValidacao0(:,1:end-2);
              [~,SamplesT0] = kmeans(SamplesT0, size(cjtTreinamento1,1));
              [~,SamplesV0] = kmeans(SamplesV0, size(cjtValidacao1,1));
