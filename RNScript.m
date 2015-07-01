@@ -5,7 +5,7 @@ preProcessamento;
 
 
 % Salvando os resultados
-OutFolderName = 'Resultados/1/';
+OutFolderName = 'Resultados/3ttt/';
 if( exist(OutFolderName, 'dir') == 0 )
     mkdir(OutFolderName);
 end
@@ -70,7 +70,7 @@ echo on
 
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.2;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.15;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
 rede.trainParam.max_fail = 150;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
@@ -122,9 +122,31 @@ figure(1);
 croc = plotroc(saidasTeste,saidasRedeTeste, 'TESTE');
 saveas(croc, [OutFolderName, 'ROCTeste.png'], 'png');
 
+
 figure(2);
 confu = plotconfusion(saidasTeste,saidasRedeTeste, 'TESTE');
 saveas(confu, [OutFolderName,'ConfusionTeste.png'], 'png');
+
+%[tp,fp,~] = roc(saidasTeste,saidasRedeTeste);
+%areaCR = trapz(cell2mat(tp),cell2mat(fp))
+
+
+baseFileNameT = 'configuracao.txt';
+fullFileNameT = fullfile(OutFolderName, baseFileNameT);
+fileIDT = fopen(fullFileNameT, 'w+');
+
+fprintf(fileIDT,'num. Epocas = %f / ',rede.trainParam.epochs);
+fprintf(fileIDT,'max fail = %f / ',rede.trainParam.max_fail);
+fprintf(fileIDT,'taxa aprendizado = %f / ',rede.trainParam.lr);
+fprintf(fileIDT,'nos camada escondida %f / ',numEscondidos);
+fprintf(fileIDT,'algoritmo treinamento = Gradiente descendente / ');
+fprintf(fileIDT,'funcao ativacao = Sigmoide Logistica / ');
+fprintf(fileIDT,'Balanceamento = Repeticao aleatoria / ');
+fprintf(fileIDT,'MSE treinamento: %6.5f / ',desempenho.perf(length(desempenho.perf)));
+fprintf(fileIDT,'MSE validacao: %6.5f / ',desempenho.vperf(length(desempenho.vperf)));
+fprintf(fileIDT,'MSE teste: %6.5f  ',desempenhoTeste);
+
+
 
 
 

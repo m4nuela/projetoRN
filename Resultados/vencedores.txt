@@ -1,0 +1,5 @@
+repeticao = 2
+dimi = 1-dim ale
+kmedias = 3-kmed
+smote = 1- smote 
+

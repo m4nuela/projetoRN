@@ -1,0 +1,10 @@
+num. Epocas = 10000.000000 / 
+max fail = 150.000000 / 
+taxa aprendizado = 0.100000 / 
+nos camada escondida 10.000000 / 
+algoritmo treinamento = Gradiente descendente / 
+funcao ativacao = Tangente Hiperbolica /
+Balanceamento = Repeticao aleatoria / 
+MSE treinamento: 0.21241 / 
+MSE validacao: 0.22633 / 
+MSE teste: 0.21291  

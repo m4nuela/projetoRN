@@ -77,11 +77,24 @@ classes = unique(dataBase(:,end-1:end),'rows');
      case 2 %kmedias
          'kmedias'
          
-          if (sizePadroes0<sizePadroes1)
-            [cjtTreinamento1, cjtValidacao1] = undersamplingKmedias(cjtTreinamento1, cjtValidacao1,size(cjtTreinamento0,1), size(cjtValidacao0,1));
-          else
-            [cjtTreinamento0, cjtValidacao0] = undersamplingKmedias(cjtTreinamento0, cjtValidacao0,size(cjtTreinamento1,1), size(cjtValidacao1,1)); 
-          end
+         if (sizePadroes0<sizePadroes1) 
+             SamplesT1 = cjtTreinamento1(:,1:end-2);
+             SamplesV1 = cjtValidacao1(:,1:end-2); 
+             [~,SamplesT1] = kmeans(SamplesT1, size(cjtTreinamento0,1)); 
+             [~,SamplesV1] = kmeans(SamplesV1, size(cjtValidacao0,1));
+             labelsT1 = cjtTreinamento1(1:size(SamplesT1,1),end-1:end); 
+             labelsV1 = cjtValidacao1(1:size(SamplesV1,1),end-1:end); 
+             cjtTreinamento1 = [SamplesT1,labelsT1];
+             cjtValidacao1 = [SamplesV1,labelsV1];
+         else SamplesT0 = cjtTreinamento0(:,1:end-2); 
+             SamplesV0 = cjtValidacao0(:,1:end-2);
+             [~,SamplesT0] = kmeans(SamplesT0, size(cjtTreinamento1,1));
+             [~,SamplesV0] = kmeans(SamplesV0, size(cjtValidacao1,1));
+             labelsT0 = cjtTreinamento0(size(SamplesT0,1),end-1:end);
+             labelsV0 = cjtValidacao0(size(SamplesV0,1),end-1:end);
+             cjtTreinamento0 = [SamplesT0,labelsT0];
+             cjtValidacao0 = [SamplesV0,labelsV0]; 
+         end
           
            numTr         = 700;   % Numero de padroes de treinamento
            numVal        = 350;    % Numero de padroes de validacao
