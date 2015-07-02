@@ -5,7 +5,7 @@ preProcessamento;
 
 
 % Salvando os resultados
-OutFolderName = 'Resultados/3ttt/';
+OutFolderName = 'Resultados/1/';
 if( exist(OutFolderName, 'dir') == 0 )
     mkdir(OutFolderName);
 end
@@ -15,7 +15,7 @@ echo on
 
 %    Informacoes sobre a rede e os dados
 numEntradas   = 46;     % Numero de nodos de entrada
-numEscondidos = 10;     % Numero de nodos escondidos
+numEscondidos = 32;     % Numero de nodos escondidos
 numSaidas     = 2;     % Numero de nodos de saida
 
 
@@ -70,7 +70,7 @@ echo on
 
 %   Parametros do treinamento (para ajuda, digite 'help traingd')
 rede.trainParam.epochs   = 10000;    % Maximo numero de iteracoes
-rede.trainParam.lr       = 0.15;  % Taxa de aprendizado
+rede.trainParam.lr       = 0.2;  % Taxa de aprendizado
 rede.trainParam.goal     = 0;      % Criterio de minimo erro de treinamento
 rede.trainParam.max_fail = 150;      % Criterio de quantidade maxima de falhas na validacao
 rede.trainParam.min_grad = 0;      % Criterio de gradiente minimo
